@@ -1,3 +1,7 @@
 nltk
 spacy
 textblob
+sentence_transformers
+transformers
+scikit-learn
+

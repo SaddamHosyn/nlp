@@ -2,7 +2,10 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import spacy
-    
+from sentence_transformers import SentenceTransformer
+from transformers import pipeline
+
+from sklearn.metrics import classification_report
 
 
 
@@ -49,4 +52,69 @@ for token in doc:
 # sat: VERB
 # on: ADP
 # the: DET
-# mat: NOUN
+# mat: NOUN   
+
+
+# Step 4: Feature Engineering and Text Representation
+
+
+# Load pre-trained model
+model = SentenceTransformer('all-MiniLM-L6-v2')
+
+# Convert sentences to embeddings
+sentences = ["The cat sits on the mat", "The feline rests on the rug"]
+embeddings = model.encode(sentences)
+
+print(f"Embedding shape: {embeddings.shape}")
+# Output: Embedding shape: (2, 384)  
+print(embeddings)
+
+ 
+ # Step 5: Modeling and Pattern Recognition
+
+
+
+# Load a pre-trained sentiment analysis model
+classifier = pipeline("sentiment-analysis")
+
+# Classify text sentiment
+texts = ["I love this product!", "This is terrible and disappointing"]
+results = classifier(texts)
+
+for text, result in zip(texts, results):
+    print(f"Text: {text}")
+    print(f"Sentiment: {result['label']}, Confidence: {result['score']:.2f}\n")
+
+# Output:
+# Text: I love this product!
+# Sentiment: POSITIVE, Confidence: 0.99
+#
+# Text: This is terrible and disappointing
+# Sentiment: NEGATIVE, Confidence: 0.99
+
+
+ # Step 6: Evaluation and Deployment
+
+
+
+
+# Example predictions vs actual labels
+y_true = [0, 1, 1, 0, 1]
+y_pred = [0, 1, 0, 0, 1]
+
+# Generate evaluation metrics
+print(classification_report(y_true, y_pred))
+
+
+
+
+#   Sentiment analysis and text classification
+from transformers import pipeline
+
+# Load sentiment analysis pipeline
+classifier = pipeline("sentiment-analysis")
+
+# Analyze sentiment
+result = classifier("I love this product! It works great.")
+print(result)
+# Output: [{'label': 'POSITIVE', 'score': 0.9998}]
