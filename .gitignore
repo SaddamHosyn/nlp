@@ -1,0 +1,10 @@
+nlp_env/
+__pycache__/
+*.pyc
+.DS_Store
+.vscode/
+data/
+outputs/
+logs/
+models/
+
