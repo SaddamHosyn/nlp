@@ -121,6 +121,14 @@ print("\n--- [STEP 7] Translation Task ---")
 # Load translation model
 model_name = 'Helsinki-NLP/opus-mt-en-es'
 print(f"DEBUG: Loading translation model '{model_name}'...")
+
+
+#from transformers import AutoModelForSeq2SeqLM
+#model = AutoModelForSeq2SeqLM.from_pretrained('Helsinki-NLP/opus-mt-en-es')
+#Beginner: Use MarianMTModel (Good for learning).
+
+#Pro: Use AutoModelForSeq2SeqLM (Flexible and robust).
+
 tokenizer = MarianTokenizer.from_pretrained(model_name)
 model_trans = MarianMTModel.from_pretrained(model_name) # Renamed to avoid variable clash
 print("DEBUG: Translation model & tokenizer loaded.")
