@@ -1,0 +1,1 @@
+does tf also count based on all documents or it is count based on single document. 

@@ -6,6 +6,9 @@ from sentence_transformers import SentenceTransformer
 from transformers import pipeline
 from transformers import MarianMTModel, MarianTokenizer
 from sklearn.metrics import classification_report
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
 
 
 print("\n--- [START] Script Starting ---")
@@ -118,6 +121,8 @@ print(classification_report(y_true, y_pred))
 # Step 7: Translation Task (Bonus)
 print("\n--- [STEP 7] Translation Task ---")
 
+# This part of the code is loading a translation model for translating text from English to Spanish.
+# Here's a breakdown of what each step is doing:
 # Load translation model
 model_name = 'Helsinki-NLP/opus-mt-en-es'
 print(f"DEBUG: Loading translation model '{model_name}'...")
@@ -128,9 +133,10 @@ print(f"DEBUG: Loading translation model '{model_name}'...")
 #Beginner: Use MarianMTModel (Good for learning).
 
 #Pro: Use AutoModelForSeq2SeqLM (Flexible and robust).
+# Tokenizer: A simple lookup table (Word → ID). Chop text into pieces (tokens). Assign each piece a unique ID number.
 
 tokenizer = MarianTokenizer.from_pretrained(model_name)
-model_trans = MarianMTModel.from_pretrained(model_name) # Renamed to avoid variable clash
+model_trans = MarianMTModel.from_pretrained(model_name) # The model converts ID forexample 345 into Coordinate [0.1, -0.9] internally.
 print("DEBUG: Translation model & tokenizer loaded.")
 
 # Translate English to Spanish (Note: Model name says en-es, output likely Spanish not German)
@@ -143,3 +149,28 @@ print(f"Original: {text_to_trans}")
 print(f"Translated: {translated_text}")
 
 print("\n--- [END] Script Finished Successfully ---")
+ 
+
+
+
+
+
+#Logistic Regression for Text Classification: Based on input features, it predicts event probability by learning linear decision boundaries.
+
+ # Sample data
+texts = ["This is spam", "Normal email", "Buy now!", "Meeting tomorrow"]
+labels = [1, 0, 1, 0]  # 1 = spam, 0 = not spam
+
+# Convert text to features
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(texts)
+
+# Train model
+X_train, X_test, y_train, y_test = train_test_split(X, labels, test_size=0.25)
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Predict
+new_text = vectorizer.transform(["Free money now"])
+prediction = model.predict(new_text)
+print(f"Prediction: {'Spam' if prediction[0] == 1 else 'Not Spam'}")
